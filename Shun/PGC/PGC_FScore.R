@@ -8,7 +8,6 @@ p <- 1
 filename <- 'Results_PGC_FScore'
 
 sink(filename, append = F)
-
 # Train dataset
 for (i in 1:T) {
     for (j in 1:T) {

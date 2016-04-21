@@ -6,7 +6,7 @@ import numpy as np
 
 # Parameters
 learning_rate = 0.001
-training_epochs = 200
+training_epochs = 10
 batch_size = 100
 display_step = 1
 
@@ -90,5 +90,6 @@ with tf.Session() as sess:
     correct_prediction = tf.equal(tf.cast(tf.round(pred), "int64"), tf.cast(y, "int64")) 
     # Calculate accuracy
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-    print "Accuracy:", accuracy.eval({x: testing[:,0:99], y: testing[:,99:]})
+    print "Training Data Accuracy:", accuracy.eval({x: training[:,0:99], y: training[:,99:]})
+    print "Testing Data Accuracy:", accuracy.eval({x: testing[:,0:99], y: testing[:,99:]})
 
