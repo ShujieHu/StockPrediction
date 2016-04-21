@@ -6,7 +6,7 @@ import numpy as np
 
 # Parameters
 learning_rate = 0.001
-training_epochs = 10 
+training_epochs = 200
 batch_size = 100
 display_step = 1
 
@@ -21,14 +21,10 @@ n_classes = 99 # MNIST total classes (0-9 digits)
 
 # tf Graph input
 x = tf.placeholder(tf.float32, shape=[None, n_input])
-y = tf.placeholder(tf.float32, shape=[None, 2])
+y = tf.placeholder(tf.float32, shape=[None, n_classes])
 
 # Create model
 def multilayer_perceptron(_X, _weights, _biases):
-    # To apply the layer, we reshape x to a 4d tensor
-    # and perform max pooling on the image.
-    x_image = tf.reshape(x, [-1, 256, 256, 1])
-    x_pool1 = tf.nn.max_pool(x_image, ksize=[1,8,8,1], strides=[1,8,8,1], padding='SAME')
     layer_1 = tf.nn.relu(tf.add(tf.matmul(_X, _weights['h1']), _biases['b1'])) #Hidden layer with RELU activation
     layer_2 = tf.nn.relu(tf.add(tf.matmul(layer_1, _weights['h2']), _biases['b2'])) #Hidden layer with RELU activation
     return tf.sigmoid(tf.matmul(layer_2, _weights['out']) + _biases['out'])
@@ -70,13 +66,13 @@ with tf.Session() as sess:
 
     # Training cycle
     for epoch in range(training_epochs):
-        np.random.shuffle(data)
+        np.random.shuffle(training)
         avg_cost = 0.
         total_batch = int(training.shape[0]/batch_size)
         # Loop over all batches
         for i in range(total_batch):
-            batch_xs = data[(0 + i * batch_size):(batch_size + i * batch_size),0:65536]
-            batch_ys = data[(0 + i * batch_size):(batch_size + i * batch_size),65536:]
+            batch_xs = training[(0 + i * batch_size):(batch_size + i * batch_size),0:99]
+            batch_ys = training[(0 + i * batch_size):(batch_size + i * batch_size),99:]
             # Fit training using batch data
             sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys})
             # Compute average loss
@@ -94,5 +90,5 @@ with tf.Session() as sess:
     correct_prediction = tf.equal(tf.cast(tf.round(pred), "int64"), tf.cast(y, "int64")) 
     # Calculate accuracy
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-    print "Accuracy:", accuracy.eval({x: testing[:,0:99], y: test[:,99:]})
+    print "Accuracy:", accuracy.eval({x: testing[:,0:99], y: testing[:,99:]})
 
