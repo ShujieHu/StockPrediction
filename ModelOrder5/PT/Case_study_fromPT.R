@@ -5,8 +5,8 @@
 load('training_returns.RData')
 stocks <- training
 
-i <- 74 
-j <- 19
+i <- 99 
+j <- 27
 p <- 5 
 response <- embed(cbind(stocks[, i], stocks[, j]), p + 1)
 prev <- response[, -(1:2)]
@@ -49,4 +49,4 @@ for (t in 1:(T - p)) {
 }
 print(profit)
 print(plainprofit)
-save(yhat, yreal, file='yValuesForPlot.RData')
+save(yhat, yreal, file='yValues_fromPT.RData')

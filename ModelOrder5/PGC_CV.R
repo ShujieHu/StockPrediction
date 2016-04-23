@@ -13,8 +13,10 @@ cross_validation <- function(X, Y, K, R) {
             Ytest <- Y[test]
 
             model <- lm(Ytrain ~ Xtrain)
-            Ypredict <- predict(model, data.frame(Xtest))
-
+            #Ypredict <- predict(model, data.frame(Xtest))
+            coef <- model$coefficients[-1]
+            incept <- model$coefficients[1]
+            Ypredict <- Xtest %*% coef + incept
             res[(i - 1) * R + j] <- sum((Ypredict - Ytest)^2) / length(Ypredict) 
         }   
     }   

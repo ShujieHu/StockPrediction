@@ -6,7 +6,7 @@ load('training_returns.RData')
 stocks <- training
 
 i <- 74 
-j <- 19
+j <- 22
 p <- 5 
 response <- embed(cbind(stocks[, i], stocks[, j]), p + 1)
 prev <- response[, -(1:2)]
